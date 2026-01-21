@@ -4,11 +4,11 @@
 # Universal setup script for new development machines
 #
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/<user>/dev-bootstrap/main/bootstrap.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/jeffko77/vm-bootstrap/main/bootstrap.sh | bash
 #
 # Or clone and run locally:
-#   git clone https://github.com/<user>/dev-bootstrap.git
-#   cd dev-bootstrap
+#   git clone https://github.com/jeffko77/vm-bootstrap.git
+#   cd vm-bootstrap
 #   bash bootstrap.sh
 #
 
@@ -26,9 +26,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # If running via curl | bash, clone the repo first
 if [ ! -f "$SCRIPT_DIR/scripts/common.sh" ]; then
-    echo -e "${BLUE}=== Cloning dev-bootstrap repository ===${NC}\n"
+    echo -e "${BLUE}=== Cloning vm-bootstrap repository ===${NC}\n"
     TEMP_DIR=$(mktemp -d)
-    git clone https://github.com/<user>/dev-bootstrap.git "$TEMP_DIR"
+    git clone https://github.com/jeffko77/vm-bootstrap.git "$TEMP_DIR"
     cd "$TEMP_DIR"
     SCRIPT_DIR="$TEMP_DIR"
 fi

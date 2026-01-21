@@ -15,7 +15,7 @@ A comprehensive, modular bootstrap repository for setting up new development mac
 ## 🗂 Complete File Structure
 
 ```
-dev-bootstrap/
+vm-bootstrap/
 │
 ├── bootstrap.sh                    # Main entrypoint (curl | bash compatible)
 │
@@ -148,13 +148,13 @@ ensure_directory()     # Create directory if not exists
 
 ### Complete Installation
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<user>/dev-bootstrap/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/<user>/vm-bootstrap/main/bootstrap.sh | bash
 ```
 
 ### Selective Installation
 ```bash
-git clone https://github.com/<user>/dev-bootstrap.git
-cd dev-bootstrap
+git clone https://github.com/<user>/vm-bootstrap.git
+cd vm-bootstrap
 
 # Install only Python and uv
 bash scripts/install_python.sh
@@ -220,13 +220,13 @@ docker run -it ubuntu:22.04 bash
 git init
 git add .
 git commit -m "Initial commit: Dev bootstrap repository"
-git remote add origin https://github.com/<user>/dev-bootstrap.git
+git remote add origin https://github.com/<user>/vm-bootstrap.git
 git push -u origin main
 ```
 
 ### One-Line Installer
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<user>/dev-bootstrap/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/<user>/vm-bootstrap/main/bootstrap.sh | bash
 ```
 
 ## 🔄 Maintenance

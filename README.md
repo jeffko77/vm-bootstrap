@@ -42,15 +42,15 @@ A comprehensive, modular bootstrap script for setting up new development machine
 ### One-Line Install (Recommended)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<your-username>/dev-bootstrap/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jeffko77/vm-bootstrap/main/bootstrap.sh | bash
 ```
 
 ### Manual Install
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/dev-bootstrap.git
-cd dev-bootstrap
+git clone https://github.com/jeffko77/vm-bootstrap.git
+cd vm-bootstrap
 
 # Make scripts executable
 chmod +x bootstrap.sh
@@ -64,7 +64,7 @@ chmod +x detection/*.sh
 ## 📁 Repository Structure
 
 ```
-dev-bootstrap/
+vm-bootstrap/
 │
 ├── bootstrap.sh                # Main entrypoint
 ├── scripts/

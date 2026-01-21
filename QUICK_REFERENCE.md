@@ -4,10 +4,10 @@
 
 ```bash
 # One-line install
-curl -fsSL https://raw.githubusercontent.com/<user>/dev-bootstrap/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jeffko77/vm-bootstrap/main/bootstrap.sh | bash
 
 # Or clone and run
-git clone https://github.com/<user>/dev-bootstrap.git && cd dev-bootstrap && ./bootstrap.sh
+git clone https://github.com/jeffko77/vm-bootstrap.git && cd vm-bootstrap && ./bootstrap.sh
 ```
 
 ## Post-Install

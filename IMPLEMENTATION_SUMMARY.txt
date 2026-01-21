@@ -85,11 +85,11 @@
 🚀 USAGE:
 
 One-Line Install (after pushing to GitHub):
-  curl -fsSL https://raw.githubusercontent.com/<user>/dev-bootstrap/main/bootstrap.sh | bash
+  curl -fsSL https://raw.githubusercontent.com/jeffko77/vm-bootstrap/main/bootstrap.sh | bash
 
 Clone and Run:
-  git clone https://github.com/<user>/dev-bootstrap.git
-  cd dev-bootstrap
+  git clone https://github.com/jeffko77/vm-bootstrap.git
+  cd vm-bootstrap
   ./bootstrap.sh
 
 Verify Installation:
@@ -110,20 +110,20 @@ Update All Tools:
 
 2. Create GitHub Repository:
    • Go to https://github.com/new
-   • Name: dev-bootstrap
+   • Name: vm-bootstrap
    • Don't initialize with README
 
 3. Push to GitHub:
-   git remote add origin https://github.com/<your-user>/dev-bootstrap.git
+   git remote add origin https://github.com/<your-user>/vm-bootstrap.git
    git branch -M main
    git push -u origin main
 
 4. Update URLs:
    • Replace <your-username> in README files
-   • Replace <user> in bootstrap.sh
+   • Replace jeffko77 in bootstrap.sh
 
 5. Test Remote Install:
-   curl -fsSL https://raw.githubusercontent.com/<your-user>/dev-bootstrap/main/bootstrap.sh | bash
+   curl -fsSL https://raw.githubusercontent.com/<your-user>/vm-bootstrap/main/bootstrap.sh | bash
 
 ═══════════════════════════════════════════════════════════════
 

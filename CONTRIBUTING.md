@@ -107,8 +107,8 @@ bash scripts/install_python.sh
 In a clean environment (VM or container):
 
 ```bash
-git clone https://github.com/your-fork/dev-bootstrap.git
-cd dev-bootstrap
+git clone https://github.com/your-fork/vm-bootstrap.git
+cd vm-bootstrap
 ./bootstrap.sh
 ```
 

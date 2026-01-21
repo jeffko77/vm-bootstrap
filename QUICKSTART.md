@@ -5,14 +5,14 @@
 ### Option 1: One-Line Install (Fastest)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<your-username>/dev-bootstrap/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jeffko77/vm-bootstrap/main/bootstrap.sh | bash
 ```
 
 ### Option 2: Clone and Run (Recommended for customization)
 
 ```bash
-git clone https://github.com/<your-username>/dev-bootstrap.git
-cd dev-bootstrap
+git clone https://github.com/jeffko77/vm-bootstrap.git
+cd vm-bootstrap
 ./bootstrap.sh
 ```
 

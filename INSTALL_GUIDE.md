@@ -14,7 +14,7 @@
 Perfect for quick setup on a brand new machine:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<your-username>/dev-bootstrap/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jeffko77/vm-bootstrap/main/bootstrap.sh | bash
 ```
 
 **What this does:**
@@ -29,8 +29,8 @@ Best for customization and understanding what's being installed:
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/dev-bootstrap.git
-cd dev-bootstrap
+git clone https://github.com/jeffko77/vm-bootstrap.git
+cd vm-bootstrap
 
 # Review the scripts (optional but recommended)
 cat bootstrap.sh
@@ -45,8 +45,8 @@ ls scripts/
 Install only specific components:
 
 ```bash
-git clone https://github.com/<your-username>/dev-bootstrap.git
-cd dev-bootstrap
+git clone https://github.com/jeffko77/vm-bootstrap.git
+cd vm-bootstrap
 
 # Install only Python
 source scripts/common.sh

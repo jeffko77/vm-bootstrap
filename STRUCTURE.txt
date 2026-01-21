@@ -1,4 +1,4 @@
-dev-bootstrap/
+vm-bootstrap/
 │
 ├── 📄 bootstrap.sh                    # Main entrypoint (curl | bash)
 ├── 🧪 test.sh                         # Test suite

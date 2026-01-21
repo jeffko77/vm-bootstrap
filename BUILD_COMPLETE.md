@@ -18,7 +18,7 @@ Your comprehensive bootstrap repository is ready to use!
 ### Directory Structure
 
 ```
-dev-bootstrap/
+vm-bootstrap/
 ├── bootstrap.sh              ✅ Main entrypoint
 ├── test.sh                   ✅ Test suite
 │
@@ -126,18 +126,18 @@ git commit -m "Initial commit: Dev bootstrap repository"
 
 ### 3. Create GitHub Repository
 1. Go to https://github.com/new
-2. Create repository named `dev-bootstrap`
+2. Create repository named `vm-bootstrap`
 3. Don't initialize with README (we already have one)
 
 ### 4. Push to GitHub
 ```bash
-git remote add origin https://github.com/<your-username>/dev-bootstrap.git
+git remote add origin https://github.com/jeffko77/vm-bootstrap.git
 git branch -M main
 git push -u origin main
 ```
 
 ### 5. Update README URLs
-Replace `<your-username>` in the following files:
+Replace `jeffko77` in the following files:
 - `README.md`
 - `QUICKSTART.md`
 - `INSTALL_GUIDE.md`
@@ -147,13 +147,13 @@ Replace `<your-username>` in the following files:
 Find and replace:
 ```bash
 cd /home/jeffko/projects/bootstrap
-sed -i 's/<your-username>/YOUR_GITHUB_USERNAME/g' README.md QUICKSTART.md INSTALL_GUIDE.md QUICK_REFERENCE.md bootstrap.sh
+sed -i 's/jeffko77/YOUR_GITHUB_USERNAME/g' README.md QUICKSTART.md INSTALL_GUIDE.md QUICK_REFERENCE.md bootstrap.sh
 ```
 
 ### 6. Test One-Line Install
 After pushing to GitHub:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<your-username>/dev-bootstrap/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jeffko77/vm-bootstrap/main/bootstrap.sh | bash
 ```
 
 ---
@@ -278,7 +278,7 @@ This project demonstrates:
 
 ## ✨ You're Done!
 
-Your dev-bootstrap repository is complete and ready to:
+Your vm-bootstrap repository is complete and ready to:
 - ✅ Bootstrap new machines in minutes
 - ✅ Share with your team
 - ✅ Customize for your needs
@@ -294,7 +294,7 @@ Your dev-bootstrap repository is complete and ready to:
 Once on GitHub, anyone can run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<your-username>/dev-bootstrap/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jeffko77/vm-bootstrap/main/bootstrap.sh | bash
 ```
 
 And in ~5 minutes have:
