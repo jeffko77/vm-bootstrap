@@ -93,6 +93,15 @@ vm-bootstrap/
 │   ├── bashrc.append           # Bash configuration additions
 │   └── wsl.conf                # WSL configuration template
 │
+├── docs/                       # Documentation
+│   ├── QUICKSTART.md           # Quick start guide
+│   ├── INSTALL_GUIDE.md        # Detailed installation
+│   ├── USAGE.md                # Usage guide
+│   ├── SECRETS_SETUP.md        # Token/secrets setup
+│   ├── CONTRIBUTING.md         # Contribution guidelines
+│   ├── QUICK_REFERENCE.md      # Command reference
+│   └── PROJECT_SUMMARY.md      # Project overview
+│
 └── README.md                   # This file
 ```
 
@@ -178,6 +187,16 @@ After running the bootstrap script:
    git config --global --list
    ```
 
+## 📚 Documentation
+
+- **[Quick Start](docs/QUICKSTART.md)** - Get started in 5 minutes
+- **[Installation Guide](docs/INSTALL_GUIDE.md)** - Detailed installation instructions
+- **[Usage Guide](docs/USAGE.md)** - How to use the bootstrap script
+- **[Secrets Setup](docs/SECRETS_SETUP.md)** - GitHub and Fly.io token configuration
+- **[Quick Reference](docs/QUICK_REFERENCE.md)** - Command cheat sheet
+- **[Contributing](docs/CONTRIBUTING.md)** - How to contribute
+- **[Project Summary](docs/PROJECT_SUMMARY.md)** - Architecture and design
+
 ## 🛡 Security Notes
 
 - The script requires `sudo` access for system package installation
@@ -253,36 +272,7 @@ echo "nameserver 1.1.1.1" | sudo tee /etc/resolv.conf
 
 Feel free to submit issues or pull requests to improve this bootstrap script!
 
-### Adding a New Tool
-
-1. Create `scripts/install_newtool.sh`
-2. Use the common functions from `scripts/common.sh`
-3. Make it idempotent (check if already installed)
-4. Add it to `bootstrap.sh`
-
-Example:
-
-```bash
-#!/usr/bin/env bash
-set -e
-
-source "$(dirname "$0")/common.sh"
-
-install_newtool() {
-    log "Installing NewTool"
-    
-    if command_exists newtool; then
-        log_warning "NewTool already installed"
-        return 0
-    fi
-    
-    # Installation commands here
-    
-    log_success "NewTool installed successfully"
-}
-
-install_newtool
-```
+See **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for detailed guidelines on how to contribute.
 
 ## 📜 License
 
