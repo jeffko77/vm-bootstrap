@@ -12,9 +12,27 @@ install_docker_cli() {
         return 0
     fi
     
-    # Install Docker
-    sudo apt update -y
-    sudo apt install -y docker.io
+    # Install Docker based on package manager
+    case "$PKG_MANAGER" in
+        apt)
+            pkg_update
+            pkg_install docker.io
+            ;;
+        dnf|yum)
+            pkg_update
+            pkg_install docker
+            ;;
+        pacman)
+            pkg_install docker
+            ;;
+        zypper)
+            pkg_install docker
+            ;;
+        *)
+            log_error "Unsupported package manager for Docker: $PKG_MANAGER"
+            return 1
+            ;;
+    esac
     
     # Add user to docker group
     sudo groupadd docker 2>/dev/null || true

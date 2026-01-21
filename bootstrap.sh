@@ -31,13 +31,18 @@ if [ ! -f "$SCRIPT_DIR/scripts/common.sh" ]; then
     # Check if git is installed, if not install it first
     if ! command -v git &> /dev/null; then
         echo -e "${YELLOW}Git not found. Installing git first...${NC}\n"
+        # Detect package manager for git installation
         if command -v apt-get &> /dev/null; then
             sudo apt-get update -qq
             sudo apt-get install -y git
-        elif command -v yum &> /dev/null; then
-            sudo yum install -y git
         elif command -v dnf &> /dev/null; then
             sudo dnf install -y git
+        elif command -v yum &> /dev/null; then
+            sudo yum install -y git
+        elif command -v pacman &> /dev/null; then
+            sudo pacman -Sy --noconfirm git
+        elif command -v zypper &> /dev/null; then
+            sudo zypper install -y git
         else
             echo -e "${RED}Error: Could not install git automatically.${NC}"
             echo -e "${RED}Please install git manually and run this script again.${NC}"
@@ -85,6 +90,15 @@ if ! sudo -v; then
     exit 1
 fi
 
+# Detect distribution and package manager
+detect_distro
+if ! detect_package_manager; then
+    log_error "Could not detect package manager. Exiting."
+    exit 1
+fi
+
+log_success "Detected: $DISTRO_NAME"
+log_success "Package manager: $PKG_MANAGER"
 log_success "Pre-flight checks passed"
 
 ##############################################
@@ -107,25 +121,62 @@ fi
 # System Package Updates
 ##############################################
 log "Installing system packages"
-sudo apt update -y
-sudo apt install -y \
-    build-essential \
-    curl \
-    wget \
-    git \
-    zip \
-    unzip \
-    jq \
-    ripgrep \
-    fd-find \
-    fzf \
-    tree \
-    htop \
-    software-properties-common \
-    apt-transport-https \
-    ca-certificates \
-    gnupg \
-    lsb-release
+
+# Map package names across distributions
+get_package_name() {
+    local pkg="$1"
+    case "$PKG_MANAGER" in
+        apt)
+            echo "$pkg"
+            ;;
+        dnf|yum)
+            case "$pkg" in
+                build-essential) echo "gcc gcc-c++ make" ;;
+                fd-find) echo "fd-find" ;;
+                software-properties-common) echo "" ;;  # Not needed on RHEL
+                apt-transport-https) echo "" ;;  # Not needed on RHEL
+                lsb-release) echo "redhat-lsb-core" ;;
+                *) echo "$pkg" ;;
+            esac
+            ;;
+        pacman)
+            case "$pkg" in
+                build-essential) echo "base-devel" ;;
+                fd-find) echo "fd" ;;
+                software-properties-common) echo "" ;;
+                apt-transport-https) echo "" ;;
+                lsb-release) echo "lsb-release" ;;
+                *) echo "$pkg" ;;
+            esac
+            ;;
+        zypper)
+            case "$pkg" in
+                build-essential) echo "gcc gcc-c++ make" ;;
+                fd-find) echo "fd" ;;
+                software-properties-common) echo "" ;;
+                apt-transport-https) echo "" ;;
+                lsb-release) echo "lsb-release" ;;
+                *) echo "$pkg" ;;
+            esac
+            ;;
+    esac
+}
+
+# Build package list for current distribution
+PACKAGES=""
+for pkg in build-essential curl wget git zip unzip jq ripgrep fd-find fzf tree htop software-properties-common apt-transport-https ca-certificates gnupg lsb-release; do
+    mapped=$(get_package_name "$pkg")
+    if [ -n "$mapped" ]; then
+        PACKAGES="$PACKAGES $mapped"
+    fi
+done
+
+# Update package lists
+pkg_update
+
+# Install packages
+log "Installing: $PACKAGES"
+pkg_install $PACKAGES
 
 log_success "System packages installed"
 

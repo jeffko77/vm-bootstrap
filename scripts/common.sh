@@ -52,6 +52,100 @@ is_linux() {
 }
 
 ##############################################
+# Distribution Detection
+##############################################
+detect_distro() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        DISTRO_ID="$ID"
+        DISTRO_VERSION="$VERSION_ID"
+        DISTRO_NAME="$NAME"
+    elif [ -f /etc/redhat-release ]; then
+        # RHEL/CentOS/AlmaLinux older versions
+        if grep -qi "almalinux" /etc/redhat-release; then
+            DISTRO_ID="almalinux"
+        elif grep -qi "centos" /etc/redhat-release; then
+            DISTRO_ID="centos"
+        elif grep -qi "rhel" /etc/redhat-release; then
+            DISTRO_ID="rhel"
+        else
+            DISTRO_ID="rhel"
+        fi
+        DISTRO_NAME=$(cat /etc/redhat-release)
+    else
+        DISTRO_ID="unknown"
+        DISTRO_NAME="Unknown Linux"
+    fi
+}
+
+detect_package_manager() {
+    if command_exists apt-get; then
+        PKG_MANAGER="apt"
+        PKG_UPDATE="apt-get update -qq"
+        PKG_INSTALL="apt-get install -y"
+        PKG_UPGRADE="apt-get upgrade -y"
+    elif command_exists dnf; then
+        PKG_MANAGER="dnf"
+        PKG_UPDATE="dnf check-update -q || true"
+        PKG_INSTALL="dnf install -y"
+        PKG_UPGRADE="dnf upgrade -y"
+    elif command_exists yum; then
+        PKG_MANAGER="yum"
+        PKG_UPDATE="yum check-update -q || true"
+        PKG_INSTALL="yum install -y"
+        PKG_UPGRADE="yum upgrade -y"
+    elif command_exists pacman; then
+        PKG_MANAGER="pacman"
+        PKG_UPDATE="pacman -Sy"
+        PKG_INSTALL="pacman -S --noconfirm"
+        PKG_UPGRADE="pacman -Su --noconfirm"
+    elif command_exists zypper; then
+        PKG_MANAGER="zypper"
+        PKG_UPDATE="zypper refresh -q"
+        PKG_INSTALL="zypper install -y"
+        PKG_UPGRADE="zypper update -y"
+    else
+        log_error "No supported package manager found (apt, dnf, yum, pacman, zypper)"
+        return 1
+    fi
+}
+
+# Initialize distribution detection
+detect_distro
+detect_package_manager
+
+##############################################
+# Package Manager Functions
+##############################################
+pkg_update() {
+    log "Updating package lists"
+    sudo $PKG_UPDATE
+}
+
+pkg_install() {
+    sudo $PKG_INSTALL "$@"
+}
+
+pkg_upgrade() {
+    sudo $PKG_UPGRADE "$@"
+}
+
+pkg_add_repo() {
+    case "$PKG_MANAGER" in
+        apt)
+            sudo add-apt-repository -y "$1"
+            ;;
+        dnf|yum)
+            # For RHEL-based, repos are typically added via .repo files
+            log_warning "Repository addition for $PKG_MANAGER may require manual .repo file setup"
+            ;;
+        *)
+            log_warning "Repository addition not automated for $PKG_MANAGER"
+            ;;
+    esac
+}
+
+##############################################
 # Utility Functions
 ##############################################
 command_exists() {
