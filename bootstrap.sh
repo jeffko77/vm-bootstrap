@@ -27,6 +27,25 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # If running via curl | bash, clone the repo first
 if [ ! -f "$SCRIPT_DIR/scripts/common.sh" ]; then
     echo -e "${BLUE}=== Cloning vm-bootstrap repository ===${NC}\n"
+    
+    # Check if git is installed, if not install it first
+    if ! command -v git &> /dev/null; then
+        echo -e "${YELLOW}Git not found. Installing git first...${NC}\n"
+        if command -v apt-get &> /dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y git
+        elif command -v yum &> /dev/null; then
+            sudo yum install -y git
+        elif command -v dnf &> /dev/null; then
+            sudo dnf install -y git
+        else
+            echo -e "${RED}Error: Could not install git automatically.${NC}"
+            echo -e "${RED}Please install git manually and run this script again.${NC}"
+            exit 1
+        fi
+        echo -e "${GREEN}Git installed successfully!${NC}\n"
+    fi
+    
     TEMP_DIR=$(mktemp -d)
     git clone https://github.com/jeffko77/vm-bootstrap.git "$TEMP_DIR"
     cd "$TEMP_DIR"
