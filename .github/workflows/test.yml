@@ -1,0 +1,38 @@
+name: Test Bootstrap Scripts
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  shellcheck:
+    name: ShellCheck Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './scripts'
+          
+      - name: Check bootstrap.sh
+        run: shellcheck bootstrap.sh
+
+  test-ubuntu:
+    name: Test on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Test environment detection
+        run: |
+          bash detection/detect_linux.sh
+          
+      - name: Test common functions
+        run: |
+          source scripts/common.sh
+          log "Test log message"
+          log_success "Test success message"

@@ -1,0 +1,46 @@
+# ============================================
+# Development Environment Additions
+# ============================================
+
+# NVM (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# uv (Python package manager)
+export UV_INSTALL="$HOME/.local/bin"
+export PATH="$UV_INSTALL:$PATH"
+
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+# flyctl
+export FLYCTL_INSTALL="$HOME/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+# Editor aliases
+alias c="cursor"
+alias v="code"
+
+# Common aliases
+alias ll="ls -lah"
+alias la="ls -A"
+alias l="ls -CF"
+alias ..="cd .."
+alias ...="cd ../.."
+
+# Git shortcuts
+alias gs="git status"
+alias gp="git pull"
+alias gps="git push"
+alias gl="git log --oneline --graph --decorate"
+
+# Set default editor
+export EDITOR="nano"
+export VISUAL="nano"
+
+# ============================================
+# Custom prompt (optional)
+# ============================================
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
