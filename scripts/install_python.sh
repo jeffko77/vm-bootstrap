@@ -38,23 +38,9 @@ install_python() {
     # Install Python based on package manager
     case "$PKG_MANAGER" in
         apt)
-            log "Installing Python 3.13 via deadsnakes PPA"
-            sudo add-apt-repository -y ppa:deadsnakes/ppa
-            pkg_update
-            pkg_install python3.13 python3.13-venv python3.13-dev
-            sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1
-            sudo update-alternatives --set python3 /usr/bin/python3.13
-            PYTHON_CMD="python3.13"
-            # Install pip using ensurepip (built into Python)
-            # For Python 3.13 from deadsnakes (non-system Python), we can use --break-system-packages
-            if ! command_exists pip3; then
-                log "Installing pip using ensurepip"
-                OUTPUT=$(sudo python3.13 -m ensurepip --upgrade 2>&1) || true
-                if echo "$OUTPUT" | grep -q "externally-managed-environment"; then
-                    log "Using --break-system-packages for Python 3.13 (non-system Python)"
-                    sudo python3.13 -m ensurepip --upgrade --break-system-packages || true
-                fi
-            fi
+            log "Installing latest stable Python 3 from system repositories"
+            pkg_install python3 python3-pip python3-venv python3-dev
+            PYTHON_CMD="python3"
             ;;
         dnf|yum)
             log "Installing Python 3 from EPEL/repositories"
@@ -90,13 +76,7 @@ install_python() {
         if python3 -m ensurepip --version &>/dev/null; then
             OUTPUT=$(sudo python3 -m ensurepip --upgrade 2>&1) || true
             if echo "$OUTPUT" | grep -q "externally-managed-environment"; then
-                # Only use --break-system-packages if this is a non-system Python (like 3.13 from deadsnakes)
-                if [[ "$PKG_MANAGER" == "apt" ]] && [[ "$PYTHON_CMD" == "python3.13" ]]; then
-                    log "Using --break-system-packages for Python 3.13 (non-system Python)"
-                    sudo python3 -m ensurepip --upgrade --break-system-packages || true
-                else
-                    log_warning "System Python detected. Please install pip via package manager: sudo apt install python3-pip"
-                fi
+                log_warning "System Python detected. Please install pip via package manager: sudo apt install python3-pip"
             fi
         else
             log_warning "ensurepip not available. pip3 may need to be installed manually."

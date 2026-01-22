@@ -18,10 +18,10 @@ install_nvm_node() {
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     
-    # Install latest Node.js
-    log "Installing latest Node.js"
-    nvm install node
-    nvm alias default node
+    # Install latest LTS (stable) Node.js
+    log "Installing latest LTS (stable) Node.js"
+    nvm install --lts
+    nvm alias default lts/*
     
     log_success "Node.js installed successfully"
     node --version
