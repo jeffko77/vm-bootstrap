@@ -84,10 +84,24 @@ if ! is_linux; then
     exit 1
 fi
 
-# Check for sudo access
-if ! sudo -v; then
-    log_error "This script requires sudo access"
-    exit 1
+# Check for sudo access and cache credentials
+# This will prompt for password once and cache it for the session
+echo ""
+echo -e "${YELLOW}⚠ This script requires sudo access to install packages and configure your system.${NC}"
+echo -e "${YELLOW}   You will be prompted for your password ONCE now, and it will be cached.${NC}"
+echo ""
+# Check if NOPASSWD is configured (no password needed)
+if sudo -n true 2>/dev/null; then
+    log_success "Sudo access confirmed (no password required)"
+else
+    # Prompt for password once and cache it
+    if ! sudo -v; then
+        log_error "This script requires sudo access"
+        exit 1
+    fi
+    # Extend sudo timeout to 1 hour to avoid repeated prompts during installation
+    sudo -v -t 3600 2>/dev/null || true
+    log_success "Sudo credentials cached for this session"
 fi
 
 # Detect distribution and package manager
