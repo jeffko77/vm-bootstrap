@@ -64,9 +64,14 @@ is_linux() {
 detect_distro() {
     if [ -f /etc/os-release ]; then
         . /etc/os-release
-        DISTRO_ID="$ID"
-        DISTRO_VERSION="$VERSION_ID"
-        DISTRO_NAME="$NAME"
+        DISTRO_ID="${ID:-unknown}"
+        DISTRO_VERSION="${VERSION_ID:-}"
+        DISTRO_NAME="${NAME:-Unknown Linux}"
+        # Kali Linux: ID=kali
+        if [ "$DISTRO_ID" = "kali" ]; then
+            DISTRO_ID="kali"
+            DISTRO_NAME="${DISTRO_NAME:-Kali GNU/Linux}"
+        fi
     elif [ -f /etc/redhat-release ]; then
         # RHEL/CentOS/AlmaLinux older versions
         if grep -qi "almalinux" /etc/redhat-release; then

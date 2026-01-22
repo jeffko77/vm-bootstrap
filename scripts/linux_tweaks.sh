@@ -15,10 +15,20 @@ apply_linux_tweaks() {
     log "Installing security tools"
     case "$PKG_MANAGER" in
         apt)
-            pkg_install fail2ban ufw unattended-upgrades
-            # Enable automatic security updates
-            log "Enabling automatic security updates"
-            sudo dpkg-reconfigure -plow unattended-upgrades || true
+            # Check if we're on Kali (many security tools may already be installed)
+            if [ "$DISTRO_ID" = "kali" ]; then
+                log "Kali Linux detected - many security tools may already be installed"
+                # Install only if not present
+                command_exists fail2ban-server || pkg_install fail2ban
+                command_exists ufw || pkg_install ufw
+                # unattended-upgrades may not be needed on Kali (rolling release)
+                log_warning "Kali uses rolling releases - automatic updates handled differently"
+            else
+                pkg_install fail2ban ufw unattended-upgrades
+                # Enable automatic security updates
+                log "Enabling automatic security updates"
+                sudo dpkg-reconfigure -plow unattended-upgrades || true
+            fi
             # Configure firewall (allow SSH)
             log "Configuring firewall (ufw)"
             sudo ufw --force enable || true
