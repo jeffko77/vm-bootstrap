@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-source "$(dirname "$0")/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 configure_git_aliases() {
     log "Adding Git aliases"

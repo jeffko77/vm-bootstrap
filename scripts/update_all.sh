@@ -4,7 +4,7 @@
 # Updates system packages and development tools
 #
 
-source "$(dirname "$0")/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 log "Updating all development tools"
 

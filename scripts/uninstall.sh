@@ -4,7 +4,7 @@
 # Removes all tools installed by the bootstrap script
 #
 
-source "$(dirname "$0")/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 log_warning "This will remove all tools installed by the bootstrap script"
 read -p "Are you sure? (yes/NO): " confirm

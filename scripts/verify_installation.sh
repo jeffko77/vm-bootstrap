@@ -4,7 +4,7 @@
 # Checks if all tools were installed correctly
 #
 
-source "$(dirname "$0")/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 echo -e "\n${BLUE}╔═══════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║  🔍 Verifying Installation 🔍        ║${NC}"
