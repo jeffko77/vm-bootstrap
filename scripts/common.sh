@@ -22,6 +22,13 @@ log_warning() {
 }
 
 ##############################################
+# Utility Functions
+##############################################
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+##############################################
 # Environment Detection
 ##############################################
 is_wsl() {
@@ -146,12 +153,8 @@ pkg_add_repo() {
 }
 
 ##############################################
-# Utility Functions
+# Utility Functions (continued)
 ##############################################
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
-
 add_to_bashrc() {
     local line="$1"
     if ! grep -qF "$line" ~/.bashrc; then
