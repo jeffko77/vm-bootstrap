@@ -11,10 +11,26 @@ install_python() {
         PYTHON_VERSION=$(python3 --version 2>&1 | awk '{print $2}' | cut -d. -f1,2)
         log_warning "Python $PYTHON_VERSION already installed"
         python3 --version
-        # Install pip if not present
+        # Install pip if not present using package manager
         if ! command_exists pip3; then
-            log "Installing pip"
-            curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3
+            log "Installing pip via package manager"
+            case "$PKG_MANAGER" in
+                apt)
+                    pkg_install python3-pip
+                    ;;
+                dnf|yum)
+                    pkg_install python3-pip
+                    ;;
+                pacman)
+                    pkg_install python-pip
+                    ;;
+                zypper)
+                    pkg_install python3-pip
+                    ;;
+                *)
+                    log_warning "Could not install pip via package manager. You may need to install it manually."
+                    ;;
+            esac
         fi
         return 0
     fi
@@ -29,6 +45,16 @@ install_python() {
             sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1
             sudo update-alternatives --set python3 /usr/bin/python3.13
             PYTHON_CMD="python3.13"
+            # Install pip using ensurepip (built into Python)
+            # For Python 3.13 from deadsnakes (non-system Python), we can use --break-system-packages
+            if ! command_exists pip3; then
+                log "Installing pip using ensurepip"
+                OUTPUT=$(sudo python3.13 -m ensurepip --upgrade 2>&1) || true
+                if echo "$OUTPUT" | grep -q "externally-managed-environment"; then
+                    log "Using --break-system-packages for Python 3.13 (non-system Python)"
+                    sudo python3.13 -m ensurepip --upgrade --break-system-packages || true
+                fi
+            fi
             ;;
         dnf|yum)
             log "Installing Python 3 from EPEL/repositories"
@@ -57,10 +83,24 @@ install_python() {
             ;;
     esac
     
-    # Install pip if not installed
+    # Verify pip is installed
     if ! command_exists pip3; then
-        log "Installing pip"
-        curl -sS https://bootstrap.pypa.io/get-pip.py | sudo $PYTHON_CMD
+        log_warning "pip3 not found after installation. Attempting to install via ensurepip..."
+        # Try ensurepip as a fallback
+        if python3 -m ensurepip --version &>/dev/null; then
+            OUTPUT=$(sudo python3 -m ensurepip --upgrade 2>&1) || true
+            if echo "$OUTPUT" | grep -q "externally-managed-environment"; then
+                # Only use --break-system-packages if this is a non-system Python (like 3.13 from deadsnakes)
+                if [[ "$PKG_MANAGER" == "apt" ]] && [[ "$PYTHON_CMD" == "python3.13" ]]; then
+                    log "Using --break-system-packages for Python 3.13 (non-system Python)"
+                    sudo python3 -m ensurepip --upgrade --break-system-packages || true
+                else
+                    log_warning "System Python detected. Please install pip via package manager: sudo apt install python3-pip"
+                fi
+            fi
+        else
+            log_warning "ensurepip not available. pip3 may need to be installed manually."
+        fi
     fi
     
     log_success "Python installed successfully"
