@@ -36,7 +36,7 @@ EOF
     
     log_success "WSL tweaks applied successfully"
     log_warning "You may need to restart WSL for all changes to take effect"
-    log_warning "Run 'wsl.exe --shutdown' from PowerShell, then restart your terminal"
+    log_warning "Options: Close/reopen terminal, 'wsl --shutdown' from PowerShell, or 'sudo reboot' from WSL"
 }
 
 apply_wsl_tweaks

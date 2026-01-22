@@ -12,7 +12,9 @@ install_flyctl() {
         return 0
     fi
     
-    curl -L https://fly.io/install.sh | sh
+    # Use non-interactive installation with automatic PATH setup
+    # The installer supports --non-interactive --setup-path flags
+    curl -L https://fly.io/install.sh | sh -s -- --non-interactive --setup-path
     
     # Add to PATH
     export FLYCTL_INSTALL="$HOME/.fly"

@@ -133,6 +133,7 @@ get_package_name() {
             case "$pkg" in
                 build-essential) echo "gcc gcc-c++ make" ;;
                 fd-find) echo "fd-find" ;;
+                python-pip) echo "python3-pip" ;;
                 software-properties-common) echo "" ;;  # Not needed on RHEL
                 apt-transport-https) echo "" ;;  # Not needed on RHEL
                 lsb-release) echo "redhat-lsb-core" ;;
@@ -143,6 +144,7 @@ get_package_name() {
             case "$pkg" in
                 build-essential) echo "base-devel" ;;
                 fd-find) echo "fd" ;;
+                python-pip) echo "python-pip" ;;
                 software-properties-common) echo "" ;;
                 apt-transport-https) echo "" ;;
                 lsb-release) echo "lsb-release" ;;
@@ -153,6 +155,7 @@ get_package_name() {
             case "$pkg" in
                 build-essential) echo "gcc gcc-c++ make" ;;
                 fd-find) echo "fd" ;;
+                python-pip) echo "python3-pip" ;;
                 software-properties-common) echo "" ;;
                 apt-transport-https) echo "" ;;
                 lsb-release) echo "lsb-release" ;;
@@ -164,7 +167,7 @@ get_package_name() {
 
 # Build package list for current distribution
 PACKAGES=""
-for pkg in build-essential curl wget git zip unzip jq ripgrep fd-find fzf tree htop software-properties-common apt-transport-https ca-certificates gnupg lsb-release; do
+for pkg in build-essential curl wget git zip unzip jq ripgrep fd-find fzf tree htop python-pip software-properties-common apt-transport-https ca-certificates gnupg lsb-release; do
     mapped=$(get_package_name "$pkg")
     if [ -n "$mapped" ]; then
         PACKAGES="$PACKAGES $mapped"
@@ -206,6 +209,17 @@ source "$SCRIPT_DIR/scripts/install_postgres.sh"
 # flyctl (Fly.io CLI)
 source "$SCRIPT_DIR/scripts/install_flyctl.sh"
 
+# GitHub CLI
+source "$SCRIPT_DIR/scripts/install_gh.sh"
+
+##############################################
+# Service Authentication
+##############################################
+log "Configuring service authentication"
+
+# Fly.io authentication
+source "$SCRIPT_DIR/scripts/configure_flyctl.sh"
+
 ##############################################
 # Git Configuration
 ##############################################
@@ -214,6 +228,9 @@ log "Configuring Git"
 source "$SCRIPT_DIR/scripts/configure_git.sh"
 source "$SCRIPT_DIR/scripts/configure_git_aliases.sh"
 source "$SCRIPT_DIR/scripts/configure_git_auth.sh"
+
+# GitHub CLI Configuration
+source "$SCRIPT_DIR/scripts/configure_gh.sh"
 
 ##############################################
 # Editor Helpers
@@ -248,7 +265,10 @@ echo ""
 echo "📝 Next steps:"
 echo "   1. Restart your terminal or run: source ~/.bashrc"
 if [ "$ENV_TYPE" = "wsl" ]; then
-    echo "   2. Restart WSL: wsl.exe --shutdown (from PowerShell)"
+    echo "   2. Restart WSL (choose one):"
+    echo "      - Simple: Close and reopen your terminal"
+    echo "      - From PowerShell: Run 'wsl --shutdown' or 'wsl.exe --shutdown'"
+    echo "      - From WSL console: Run 'sudo reboot' (restarts WSL instance)"
 fi
 echo "   3. Verify installations:"
 echo "      - python3 --version"
@@ -257,5 +277,6 @@ echo "      - uv --version"
 echo "      - pnpm --version"
 echo "      - docker --version"
 echo "      - flyctl version"
+echo "      - gh --version"
 echo ""
 log_success "Happy coding! 🎉"
