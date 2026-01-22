@@ -127,16 +127,13 @@ get_package_name() {
     local pkg="$1"
     case "$PKG_MANAGER" in
         apt)
-            case "$pkg" in
-                python-pip) echo "python3-pip" ;;
-                *) echo "$pkg" ;;
-            esac
+            echo "$pkg"
             ;;
         dnf|yum)
             case "$pkg" in
                 build-essential) echo "gcc gcc-c++ make" ;;
                 fd-find) echo "fd-find" ;;
-                python-pip) echo "python3-pip" ;;
+                python3-pip) echo "python3-pip" ;;
                 software-properties-common) echo "" ;;  # Not needed on RHEL
                 apt-transport-https) echo "" ;;  # Not needed on RHEL
                 lsb-release) echo "redhat-lsb-core" ;;
@@ -147,7 +144,7 @@ get_package_name() {
             case "$pkg" in
                 build-essential) echo "base-devel" ;;
                 fd-find) echo "fd" ;;
-                python-pip) echo "python-pip" ;;
+                python3-pip) echo "python-pip" ;;
                 software-properties-common) echo "" ;;
                 apt-transport-https) echo "" ;;
                 lsb-release) echo "lsb-release" ;;
@@ -158,7 +155,7 @@ get_package_name() {
             case "$pkg" in
                 build-essential) echo "gcc gcc-c++ make" ;;
                 fd-find) echo "fd" ;;
-                python-pip) echo "python3-pip" ;;
+                python3-pip) echo "python3-pip" ;;
                 software-properties-common) echo "" ;;
                 apt-transport-https) echo "" ;;
                 lsb-release) echo "lsb-release" ;;
@@ -170,7 +167,7 @@ get_package_name() {
 
 # Build package list for current distribution
 PACKAGES=""
-for pkg in build-essential curl wget git zip unzip jq ripgrep fd-find fzf tree htop python-pip software-properties-common apt-transport-https ca-certificates gnupg lsb-release; do
+for pkg in build-essential curl wget git zip unzip jq ripgrep fd-find fzf tree htop python3-pip software-properties-common apt-transport-https ca-certificates gnupg lsb-release; do
     mapped=$(get_package_name "$pkg")
     if [ -n "$mapped" ]; then
         PACKAGES="$PACKAGES $mapped"
