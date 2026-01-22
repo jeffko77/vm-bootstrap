@@ -127,7 +127,10 @@ get_package_name() {
     local pkg="$1"
     case "$PKG_MANAGER" in
         apt)
-            echo "$pkg"
+            case "$pkg" in
+                python-pip) echo "python3-pip" ;;
+                *) echo "$pkg" ;;
+            esac
             ;;
         dnf|yum)
             case "$pkg" in
